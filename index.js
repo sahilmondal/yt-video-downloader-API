@@ -1,11 +1,12 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 
 dotenv.config();
 import youtubeLink from "./routes/youtubeLink/youtubeLink.js";
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.ORIGIN,
   // credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
