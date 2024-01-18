@@ -3,7 +3,11 @@ const youtubeLink = async (req, res) => {
   try {
     const videoUrl = req.body.videoUrl;
     if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-      const videoStream = await ytdl(videoUrl, { quality: "highest" });
+      const videoStream = await ytdl(
+        videoUrl,
+        { quality: "highest" },
+        { dlChunkSize: "5mb" }
+      );
       res.header("Content-Disposition", `attachment; filename="video.mp4"`);
       videoStream.pipe(res);
     } else {
