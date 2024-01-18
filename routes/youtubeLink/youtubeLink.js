@@ -5,7 +5,7 @@ const youtubeLink = async (req, res) => {
     if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
       const videoStream = await ytdl(
         videoUrl,
-        { quality: "highest" },
+        { quality: "highestvideo" },
         { dlChunkSize: 5 }
       );
       res.header("Content-Disposition", `attachment; filename="video.mp4"`);
