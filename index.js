@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import youtubeLink from "./routes/youtubeLink/youtubeLink.js";
 import test from "./routes/youtubeLink/test.js";
-
+import audio from "./routes/youtubeLink/audio.js";
 dotenv.config();
 const corsOptions = {
   origin: process.env.ORIGIN,
@@ -18,6 +18,7 @@ app.use(cors(corsOptions));
 
 app.post("/youtube", youtubeLink);
 app.post("/test", test);
+app.post("/audio", audio);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
