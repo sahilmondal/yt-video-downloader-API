@@ -32,6 +32,7 @@ The server will run on `http://localhost:3000` by default.
 4. **API Endpoints:**
 
 - `POST /youtube`: Send a POST request with a JSON payload containing the `videoUrl` property to download a YouTube video. The server will respond with the MP4 video file.
+- `POST /audio`: Send a POST request with a JSON payload containing the `videoUrl` property to download a YouTube mp3. The server will respond with the Mp3 audio file.
 
   5. **Example Usage:**
 
