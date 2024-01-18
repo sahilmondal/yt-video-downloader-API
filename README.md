@@ -15,7 +15,7 @@ Follow the steps below to set up and run the API on your local machine:
 1. **Clone the Repository:**
 
    Clone this repository to your local machine using the following command:
- git clone https://github.com/your-username/youtube-instagram-downloader-api.git
+ git clone https://github.com/sahilmondal/yt-video-downloader-API.git
 
 
 2. **Install Dependencies:**
