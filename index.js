@@ -6,15 +6,16 @@ import youtubeLink from "./routes/youtubeLink/youtubeLink.js";
 import test from "./routes/youtubeLink/test.js";
 
 dotenv.config();
-const corsOptions = {
-  origin: process.env.ORIGIN,
-  // credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: process.env.ORIGIN,
+//   // credentials: true, //access-control-allow-credentials:true
+//   optionSuccessStatus: 200,
+// };
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 
 app.post("/youtube", youtubeLink);
 app.post("/test", test);
