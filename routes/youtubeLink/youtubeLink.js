@@ -6,7 +6,7 @@ const youtubeLink = async (req, res) => {
       const videoStream = await ytdl(
         videoUrl,
         { quality: "highest" },
-        { dlChunkSize: "5mb" }
+        { dlChunkSize: 5 }
       );
       res.header("Content-Disposition", `attachment; filename="video.mp4"`);
       videoStream.pipe(res);
