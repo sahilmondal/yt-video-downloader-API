@@ -211,7 +211,7 @@ GET `/health` returns server status:
 ## Notes
 
 - Don't try to delete the /downloads folder as it contains the big videos(temporarily) before sending it to the client.
-- Don't host it on vercel/netlify as response time i usually more than 10s use locally or in a VPS instead.
+- Don't host it on vercel/netlify as response time is usually more than 10s so use it locally or in a VPS instead.
 - Files are streamed directly for preview in browser/Postman
 - Support for range requests enables seeking in media players
 - Temporary files are automatically cleaned up after streaming
