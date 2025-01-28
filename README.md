@@ -1,51 +1,219 @@
-# YouTube Video Downloader API using NODE.JS & EXPRESS
+# YouTube Video/Audio Downloader API
 
-This is a backend API project that allows users to download videos from YouTube. It provides a simple server built with Node.js and Express to handle video downloads in MP4 format for YouTube.
+A Node.js API for downloading YouTube videos and audio with preview support. Supports both youtube.com and youtu.be URLs.
 
-## Features
+## Prerequisites
 
-- Download YouTube videos in MP4 format.
-- Download Youtube Shorts in MP4 format.
-- Download Youtube videos in MP3 format(upcoming feature).
-- 
-## How to Use
+1. Node.js 14+ installed
 
-Follow the steps below to set up and run the API on your local machine:
+## Setup
 
-1. **Clone the Repository:**
-
-   Clone this repository to your local machine using the following command:
- git clone https://github.com/sahilmondal/yt-video-downloader-API.git
-
-
-2. **Install Dependencies:**
-
-Navigate to the project folder and install the required dependencies using npm:
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
-cd youtube-instagram-downloader-api
 npm install
-Start the Node.js server using the following command: npm start
-
-The server will run on `http://localhost:3000` by default.
 ```
-4. **API Endpoints:**
 
-- `POST /youtube`: Send a POST request with a JSON payload containing the `videoUrl` property to download a YouTube video. The server will respond with the MP4 video file.
-- `POST /audio`: Send a POST request with a JSON payload containing the `videoUrl` property to download a YouTube mp3. The server will respond with the Mp3 audio file.
+3. Create a .env file with:
 
-  5. **Example Usage:**
+```env
+PORT=3000
+ORIGIN=http://localhost:3000
+```
 
-Send a POST request to `http://localhost:3000/download/youtube` with the following JSON payload to download a YouTube video:
+4. Start the server:
+
+```bash
+npm start
+```
+
+## API Endpoints
+
+### 1. Video Download `/youtube`
+
+#### Get Video Information
+
+```http
+POST /youtube
+Content-Type: application/json
+
+{
+  "videoUrl": "https://www.youtube.com/watch?v=VIDEO_ID",
+  "getInfo": true
+}
+```
+
+Or using youtu.be format:
+
+```http
+{
+  "videoUrl": "https://youtu.be/VIDEO_ID",
+  "getInfo": true
+}
+```
+
+Response:
 
 ```json
 {
-  "videoUrl": "https://www.youtube.com/watch?v=example_video_id"
+  "title": "Video Title",
+  "duration": 300,
+  "thumbnail": "thumbnail_url",
+  "description": "video description",
+  "formats": [
+    {
+      "format_id": "22",
+      "ext": "mp4",
+      "quality": "720p",
+      "resolution": "1280x720",
+      "filesize": 12345678
+    }
+  ]
 }
 ```
-## Legal Considerations
 
-Downloading videos from YouTube may violate their terms of service and copyright laws. Use this API responsibly and ensure that you have the necessary permissions to download and use the videos.
-Contributions
+#### Download/Stream Video
 
-Contributions to this project are welcome! If you find any issues or have ideas for improvements, feel free to open a pull request or an issue.
+```http
+POST /youtube
+Content-Type: application/json
+
+{
+  "videoUrl": "https://www.youtube.com/watch?v=VIDEO_ID",
+  "quality": "best[ext=mp4]"  // Optional: format selection
+}
+```
+
+### 2. Audio Download `/audio`
+
+#### Get Audio Information
+
+```http
+POST /audio
+Content-Type: application/json
+
+{
+  "videoUrl": "https://www.youtube.com/watch?v=VIDEO_ID",
+  "getInfo": true
+}
+```
+
+Response:
+
+```json
+{
+  "title": "Video Title",
+  "duration": 300,
+  "thumbnail": "thumbnail_url",
+  "description": "video description",
+  "formats": [
+    {
+      "format_id": "140",
+      "ext": "m4a",
+      "quality": "128k",
+      "filesize": 12345678,
+      "asr": 44100
+    }
+  ]
+}
+```
+
+#### Download/Stream Audio
+
+```http
+POST /audio
+Content-Type: application/json
+
+{
+  "videoUrl": "https://youtu.be/VIDEO_ID"
+}
+```
+
+## URL Support
+
+The API accepts YouTube URLs in both formats:
+
+- Standard format: `https://www.youtube.com/watch?v=VIDEO_ID`
+- Short format: `https://youtu.be/VIDEO_ID`
+
+Parameters in URLs (like `?si=...`) are automatically handled.
+
+## Features
+
+- Support for any length videos
+- Support for both youtube.com and youtu.be URLs
+- Video/audio preview support in Postman or browser
+- Video format selection
+- High-quality audio extraction
+- Range request support for streaming
+- Progress tracking via Content-Length
+- Proper MIME types
+- Error handling
+- Sanitized filenames
+- Cache control headers
+
+## Preview Support
+
+Both video and audio endpoints support:
+
+- Direct preview in Postman
+- HTML5 video/audio player integration
+- Streaming with range requests
+- Progress tracking
+- Proper content type headers
+
+### Using in Frontend
+
+Example HTML5 video player:
+
+```html
+<video controls>
+  <source src="http://localhost:3000/youtube" type="video/mp4" />
+</video>
+```
+
+Example HTML5 audio player:
+
+```html
+<audio controls>
+  <source src="http://localhost:3000/audio" type="audio/mp3" />
+</audio>
+```
+
+## Error Responses
+
+All error responses follow this format:
+
+```json
+{
+  "error": "Error type",
+  "details": "Detailed error message"
+}
+```
+
+Common status codes:
+
+- 400: Invalid URL or parameters
+- 500: Server or download errors
+- 206: Partial content (for range requests)
+
+## Health Check
+
+GET `/health` returns server status:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+## Notes
+
+- Don't try to delete the /downloads folder as it contains the big videos(temporarily) before sending it to the client.
+- Don't host it on vercel/netlify as response time i usually more than 10s use locally or in a VPS instead.
+- Files are streamed directly for preview in browser/Postman
+- Support for range requests enables seeking in media players
+- Temporary files are automatically cleaned up after streaming
+- Server timeout is set to 5 minutes for large files
+- All YouTube URL formats are supported (youtube.com and youtu.be)
